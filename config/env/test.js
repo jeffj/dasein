@@ -1,47 +1,33 @@
-'use strict';
+
+/**
+ * Expose
+ */
 
 module.exports = {
-  db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/mean-test',
-  http: {
-    port: 3001
-  },
-  logging: {
-    format: 'common'
-  },
-  app: {
-    name: 'MEAN - A Modern Stack - Test'
-  },
+  db: 'mongodb://localhost/noobjs_test',
   facebook: {
-    clientID: 'APP_ID',
-    clientSecret: 'APP_SECRET',
-    callbackURL: 'http://localhost:3000/auth/facebook/callback'
+    clientID: process.env.FACEBOOK_CLIENTID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
   },
   twitter: {
-    clientID: 'CONSUMER_KEY',
-    clientSecret: 'CONSUMER_SECRET',
-    callbackURL: 'http://localhost:3000/auth/twitter/callback'
+    clientID: process.env.TWITTER_CLIENTID,
+    clientSecret: process.env.TWITTER_SECRET,
+    callbackURL: "http://localhost:3000/auth/twitter/callback"
   },
   github: {
-    clientID: 'APP_ID',
-    clientSecret: 'APP_SECRET',
+    clientID: process.env.GITHUB_CLIENTID,
+    clientSecret: process.env.GITHUB_SECRET,
     callbackURL: 'http://localhost:3000/auth/github/callback'
   },
-  google: {
-    clientID: 'APP_ID',
-    clientSecret: 'APP_SECRET',
-    callbackURL: 'http://localhost:3000/auth/google/callback'
-  },
   linkedin: {
-    clientID: 'API_KEY',
-    clientSecret: 'SECRET_KEY',
+    clientID: process.env.LINKEDIN_CLIENTID,
+    clientSecret: process.env.LINKEDIN_SECRET,
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
   },
-  emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
-  mailer: {
-    service: 'SERVICE_PROVIDER',
-    auth: {
-      user: 'EMAIL_ID',
-      pass: 'PASSWORD'
-    }
+  google: {
+    clientID: process.env.GOOGLE_CLIENTID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback"
   }
 };

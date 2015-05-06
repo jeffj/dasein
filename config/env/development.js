@@ -1,50 +1,53 @@
-'use strict';
+
+/*!
+ * Module dependencies.
+ */
+
+var fs = require('fs');
+var env = {};
+var envFile = __dirname + '/env.json';
+
+// Read env.json file, if it exists, load the id's and secrets from that
+// Note that this is only in the development env
+// it is not safe to store id's in files
+
+if (fs.existsSync(envFile)) {
+  env = fs.readFileSync(envFile, 'utf-8');
+  env = JSON.parse(env);
+  Object.keys(env).forEach(function (key) {
+    process.env[key] = env[key];
+  });
+}
+
+/**
+ * Expose
+ */
 
 module.exports = {
-  db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/mean-dev',
-  debug: true,
-  logging: {
-    format: 'tiny'
-  },
-  //  aggregate: 'whatever that is not false, because boolean false value turns aggregation off', //false
-  aggregate: false,
-  mongoose: {
-    debug: false
-  },
-  app: {
-    name: 'MEAN - FullStack JS - Development'
-  },
+  db: 'mongodb://localhost/noobjs_dev',
   facebook: {
-    clientID: 'DEFAULT_APP_ID',
-    clientSecret: 'APP_SECRET',
-    callbackURL: 'http://localhost:3000/auth/facebook/callback'
+    clientID: process.env.FACEBOOK_CLIENTID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
   },
   twitter: {
-    clientID: 'DEFAULT_CONSUMER_KEY',
-    clientSecret: 'CONSUMER_SECRET',
-    callbackURL: 'http://localhost:3000/auth/twitter/callback'
+    clientID: process.env.TWITTER_CLIENTID,
+    clientSecret: process.env.TWITTER_SECRET,
+    callbackURL: "http://localhost:3000/auth/twitter/callback"
   },
   github: {
-    clientID: 'DEFAULT_APP_ID',
-    clientSecret: 'APP_SECRET',
+    clientID: process.env.GITHUB_CLIENTID,
+    clientSecret: process.env.GITHUB_SECRET,
     callbackURL: 'http://localhost:3000/auth/github/callback'
   },
-  google: {
-    clientID: 'DEFAULT_APP_ID',
-    clientSecret: 'APP_SECRET',
-    callbackURL: 'http://localhost:3000/auth/google/callback'
-  },
   linkedin: {
-    clientID: 'DEFAULT_API_KEY',
-    clientSecret: 'SECRET_KEY',
+    clientID: process.env.LINKEDIN_CLIENTID,
+    clientSecret: process.env.LINKEDIN_SECRET,
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
   },
-  emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
-  mailer: {
-    service: 'SERVICE_PROVIDER', // Gmail, SMTP
-    auth: {
-      user: 'EMAIL_ID',
-      pass: 'PASSWORD'
-    }
+  google: {
+    clientID: process.env.GOOGLE_CLIENTID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/callback"
   }
 };
