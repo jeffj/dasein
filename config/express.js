@@ -65,7 +65,7 @@ module.exports = function (app, passport) {
 
   // set views path, template engine and default layout
   app.engine('html', swig.renderFile);
-  app.set('views', config.root + '/app/views');
+  app.set('views', config.root + '/app/');
   app.set('view engine', 'html');
 
   // expose package.json to views
@@ -114,7 +114,6 @@ module.exports = function (app, passport) {
   // adds CSRF support
   if (process.env.NODE_ENV !== 'test') {
     app.use(csrf());
-
     // This could be moved to view-helpers :-)
     app.use(function (req, res, next) {
       res.locals.csrf_token = req.csrfToken();

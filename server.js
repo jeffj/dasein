@@ -7,7 +7,7 @@
 /**
  * Module dependencies
  */
-
+var glob = require("glob")
 var fs = require('fs');
 var express = require('express');
 var mongoose = require('mongoose');
@@ -16,7 +16,7 @@ var config = require('./config/config');
 
 var app = express();
 var port = process.env.PORT || 3000;
-
+var auth = require('./config/middlewares/authorization');
 
 // Connect to mongodb
 var connect = function () {
@@ -28,9 +28,8 @@ connect();
 mongoose.connection.on('error', console.log);
 mongoose.connection.on('disconnected', connect);
 
-// Bootstrap models
-fs.readdirSync(__dirname + '/app/models').forEach(function (file) {
-  if (~file.indexOf('.js')) require(__dirname + '/app/models/' + file);
+glob.sync(__dirname + '/app/*/models/*', {}).forEach(function (file) {
+  if (~file.indexOf('.js')) require(file);
 });
 
 // Bootstrap passport config
@@ -40,7 +39,10 @@ require('./config/passport')(passport, config);
 require('./config/express')(app, passport);
 
 // Bootstrap routes
-require('./config/routes')(app, passport);
+glob.sync(__dirname + '/app/*/routes/*', {}).forEach(function (file) {
+  if (file.indexOf('app/main/routes')===-1 && ~file.indexOf('.js')) require(file)(app, passport, auth);
+});
+require(__dirname + '/app/main/routes/index.js')(app, passport, auth); //always do main routes last
 
 app.listen(port);
 console.log('Express app started on port ' + port);

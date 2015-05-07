@@ -5,7 +5,6 @@
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var utils = require('../../lib/utils');
 
 /**
  * Load
@@ -34,11 +33,6 @@ exports.create = function (req, res) {
     if (err) {
       req.flash('error', utils.errors(err.errors));
       return res.redirect('/signup')
-      // return res.render('users/signup', {
-      //   error: utils.errors(err.errors),
-      //   user: user,
-      //   title: 'Sign up'
-      // });
     }
 
     // manually login the user once successfully signed up
@@ -55,7 +49,7 @@ exports.create = function (req, res) {
 
 exports.show = function (req, res) {
   var user = req.profile;
-  res.render('users/show', {
+  res.render('users/views/show', {
     title: user.name,
     user: user
   });
@@ -74,7 +68,7 @@ exports.authCallback = login;
  */
 
 exports.login = function (req, res) {
-  res.render('users/login', {
+  res.render('users/views/login', {
     title: 'Login'
   });
 };
@@ -84,7 +78,7 @@ exports.login = function (req, res) {
  */
 
 exports.signup = function (req, res) {
-  res.render('users/signup', {
+  res.render('users/views/signup', {
     title: 'Sign up',
     user: new User()
   });

@@ -4,8 +4,8 @@
  */
 
 var mongoose = require('mongoose')
-var Article = mongoose.model('Article')
-var utils = require('../../lib/utils')
+var Article = mongoose.model('Verts')
+//var utils = require('../../lib/utils')
 var extend = require('util')._extend
 
 /**
@@ -36,9 +36,9 @@ exports.index = function (req, res){
   };
 
   Article.list(options, function (err, articles) {
-    if (err) return res.render('500');
+    if (err) return res.render('main/views/500');
     Article.count().exec(function (err, count) {
-      res.render('articles/index', {
+      res.render('verts/views/index', {
         title: 'Articles',
         articles: articles,
         page: page + 1,
