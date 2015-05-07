@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-
+var utils = require('../../../lib/utils')
 /**
  * Load
  */
@@ -34,7 +34,6 @@ exports.create = function (req, res) {
       req.flash('error', utils.errors(err.errors));
       return res.redirect('/signup')
     }
-
     // manually login the user once successfully signed up
     req.logIn(user, function(err) {
       if (err) req.flash('info', 'Sorry! We are not able to log you in!');
