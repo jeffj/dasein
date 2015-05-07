@@ -34,7 +34,7 @@ module.exports = function (app, passport, auth) {
    * Error handling
    */
   // home route
-  app.get('/', main.index);
+//  app.get('/', main.index);
 
   app.use(function (err, req, res, next) {
     // treat as 404

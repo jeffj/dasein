@@ -21,6 +21,7 @@ var winston = require('winston');
 var helpers = require('view-helpers');
 var config = require('../config/config');
 var pkg = require('../package.json');
+var glob = require('glob');
 
 var env = process.env.NODE_ENV || 'development';
 
@@ -35,8 +36,9 @@ module.exports = function (app, passport) {
     threshold: 512
   }));
 
+  app.use('/static',express.static(config.root + '/public'));
+  
   // Static files middleware
-  app.use(express.static(config.root + '/public'));
 
   // Use winston on production
   var log;

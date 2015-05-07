@@ -8,6 +8,9 @@
 
 //var users = require('../app/users/controllers/users');
 var verts = require('../controllers/verts');
+var express = require('express');
+var config = require('../../../config/config');
+
 // var comments = require('../app/controllers/comments');
 // var tags = require('../app/controllers/tags');
 //var auth = require('../../../config/middlewares/authorization');
@@ -24,6 +27,10 @@ module.exports = function (app, passport, auth) {
 
   var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
   var commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
+
+  app.get('/', verts.index);
+
+  //app.use('/verts',express.static('./public'));
 
 
   // article routes

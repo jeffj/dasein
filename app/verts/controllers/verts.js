@@ -27,26 +27,32 @@ exports.load = function (req, res, next, id){
  * List
  */
 
-exports.index = function (req, res){
-  var page = (req.param('page') > 0 ? req.param('page') : 1) - 1;
-  var perPage = 30;
-  var options = {
-    perPage: perPage,
-    page: page
-  };
 
-  Article.list(options, function (err, articles) {
-    if (err) return res.render('main/views/500');
-    Article.count().exec(function (err, count) {
-      res.render('verts/views/index', {
-        title: 'Articles',
-        articles: articles,
-        page: page + 1,
-        pages: Math.ceil(count / perPage)
+exports.index = function (req, res){
+    res.render('verts/views/index', {
+        title: 'Articles'
       });
-    });
-  });
+    
+  // var page = (req.param('page') > 0 ? req.param('page') : 1) - 1;
+  // var perPage = 30;
+  // var options = {
+  //   perPage: perPage,
+  //   page: page
+  // };
+
+  // Article.list(options, function (err, articles) {
+  //   if (err) return res.render('500');
+  //   Article.count().exec(function (err, count) {
+  //     res.render('articles/index', {
+  //       title: 'Articles',
+  //       articles: articles,
+  //       page: page + 1,
+  //       pages: Math.ceil(count / perPage)
+  //     });
+  //   });
+  // });
 };
+
 
 /**
  * New article
