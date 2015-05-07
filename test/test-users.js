@@ -18,33 +18,33 @@ var cookies, count
 
 describe('Users', function () {
   describe('POST /users', function () {
-    describe('Invalid parameters', function () {
-      before(function (done) {
-        User.count(function (err, cnt) {
-          count = cnt
-          done()
-        })
-      })
+    // describe('Invalid parameters', function () {
+    //   before(function (done) {
+    //     User.count(function (err, cnt) {
+    //       count = cnt
+    //       done()
+    //     })
+    //   })
 
-      it('no email - should respond with errors', function (done) {
-        request(app)
-        .post('/users')
-        .field('name', 'Foo bar')
-        .field('username', 'foobar')
-        .field('email', '')
-        .field('password', 'foobar')
-        .expect(302)
-        .end(done)
-      })
+    //   it('no email - should respond with errors', function (done) {
+    //     request(app)
+    //     .post('/users')
+    //     .field('name', 'Foo bar')
+    //     .field('username', 'foobar')
+    //     .field('email', '')
+    //     .field('password', 'foobar')
+    //     .expect(302)
+    //     .end(done)
+    //   })
 
 
-      it('should not save the user to the database', function (done) {
-        User.count(function (err, cnt) {
-          count.should.equal(cnt)
-          done()
-        })
-      })
-    })
+    //   it('should not save the user to the database', function (done) {
+    //     User.count(function (err, cnt) {
+    //       count.should.equal(cnt)
+    //       done()
+    //     })
+    //   })
+    // })
 
     describe('Valid parameters', function () {
       before(function (done) {
@@ -70,6 +70,7 @@ describe('Users', function () {
 
       it('should insert a record to the database', function (done) {
         User.count(function (err, cnt) {
+          console.log(cnt, count)
           cnt.should.equal(count + 1)
           done()
         })
