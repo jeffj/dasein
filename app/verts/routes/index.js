@@ -28,7 +28,7 @@ module.exports = function (app, passport, auth) {
   var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
   var commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
-  app.get('/', verts.index);
+  //app.get('/', verts.index);
 
   //app.use('/verts',express.static('./public'));
 

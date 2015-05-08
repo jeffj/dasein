@@ -8,6 +8,10 @@
 
 //var users = require('../app/users/controllers/users');
  var main = require('../controllers/index');
+ var express = require('express');
+
+ //var express = require('../public/js/actions');
+
 // var tags = require('../app/controllers/tags');
 //var auth = require('../../../config/middlewares/authorization');
 
@@ -25,7 +29,10 @@ module.exports = function (app, passport, auth) {
   var commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
   // home route
-  //app.get('/', verts.index);
+  app.get('/', main.index);
+
+  app.use('/main',express.static(__dirname+'/../public'));
+
 
   // article routes
   // app.param('id', articles.load);

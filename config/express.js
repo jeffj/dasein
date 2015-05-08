@@ -36,7 +36,7 @@ module.exports = function (app, passport) {
     threshold: 512
   }));
 
-  app.use('/static',express.static(config.root + '/public'));
+  app.use('/',express.static(config.root + '/public'));
   
   // Static files middleware
 
