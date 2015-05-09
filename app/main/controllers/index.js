@@ -15,8 +15,8 @@
 
 exports.index = function (req, res){
     res.render('main/views/index', {
-        title: 'Articles'
-      });
+        title: 'Articles' 
+    });
     
   // var page = (req.param('page') > 0 ? req.param('page') : 1) - 1;
   // var perPage = 30;

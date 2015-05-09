@@ -119,6 +119,7 @@ module.exports = function (app, passport) {
     // This could be moved to view-helpers :-)
     app.use(function (req, res, next) {
       res.locals.csrf_token = req.csrfToken();
+      res.locals.bundle = config.bundle
       next();
     });
   }

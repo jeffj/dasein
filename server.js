@@ -26,7 +26,7 @@ connect();
 
 mongoose.connection.on('error', console.log);
 mongoose.connection.on('disconnected', connect);
-
+//get all the models
 glob.sync(__dirname + '/app/*/models/*', {}).forEach(function (file) {
   if (~file.indexOf('.js')) require(file);
 });
