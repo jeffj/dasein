@@ -23,6 +23,10 @@ var config = require('../config/config');
 var pkg = require('../package.json');
 var glob = require('glob');
 
+
+var expressLess = require('express-less');
+
+
 var env = process.env.NODE_ENV || 'development';
 
 /**
@@ -35,6 +39,12 @@ module.exports = function (app, passport) {
   app.use(compression({
     threshold: 512
   }));
+
+  if (env === 'development') {
+    app.use('/', expressLess(config.root + '/public', { debug: true }));
+  } else{
+    
+  }
 
   app.use('/',express.static(config.root + '/public'));
   
