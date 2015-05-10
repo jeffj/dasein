@@ -1,7 +1,9 @@
+@import "vendor/bootstrap-responsive.min.css";
+@import "vendor/bootstrap-responsive.min.css";
+@import "vendor/bootstrap.min.css";
 html,
 body {
-  margin: 0;
-  padding: 0;
+  height: 100%;
 }
 html,
 body {
