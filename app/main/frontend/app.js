@@ -10,6 +10,7 @@ npm * Copyright (c) 2014, Facebook, Inc.
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
+//Import the components of the different app components
 var TodoApp = require('../../verts/frontend/appClass');
 
 
@@ -37,6 +38,7 @@ var routes = (
   </Route>
 );
 
+// Execute the app
 var RouteHandler = Router.RouteHandler;
 
 var App = React.createClass({

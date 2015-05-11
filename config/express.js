@@ -22,12 +22,9 @@ var helpers = require('view-helpers');
 var config = require('../config/config');
 var pkg = require('../package.json');
 var glob = require('glob');
-
-
 var expressLess = require('express-less');
 
-
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV;
 
 /**
  * Expose
@@ -100,6 +97,7 @@ module.exports = function (app, passport) {
     }
   }));
 
+  console.log(config)
   // CookieParser should be above session
   app.use(cookieParser());
   app.use(cookieSession({ secret: 'secret' }));
@@ -131,8 +129,6 @@ module.exports = function (app, passport) {
       res.locals.csrf_token = req.csrfToken();
       res.locals.bundle = config.bundle
       res.locals.env = env
-
-      
       next();
     });
   }
