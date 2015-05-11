@@ -15,7 +15,8 @@ var TodoConstants = require('../constants/TodoConstants');
 var assign = require('object-assign');
 var Immutable = require('immutable');
 var $ = require('jquery');
-var csrfToken = $('#csrf-token').data('csrf');
+var csrfTag = $('#csrf-token');
+var csrfToken = csrfTag ? csrfTag.data('csrf'):null;
 var CHANGE_EVENT = 'change';
 var _history = [];
 var _todos = Immutable.OrderedMap();
@@ -36,7 +37,7 @@ function create(text) {
   // Using the current timestamp + random number in place of a real id.
   $.ajax({
     method: "POST",
-    url: '/verts/',
+    url: '/verts',
     data: {text:text,_csrf:csrfToken}
   })
   .done(function( result ) {
