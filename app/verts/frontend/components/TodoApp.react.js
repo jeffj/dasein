@@ -35,6 +35,7 @@ var TodoApp = React.createClass({
   },
 
   componentDidMount: function() {
+    TodoStore.fetchAll();
     TodoStore.addChangeListener(this._onChange);
   },
 

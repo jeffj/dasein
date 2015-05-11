@@ -14,9 +14,9 @@ var EventEmitter = require('events').EventEmitter;
 var TodoConstants = require('../constants/TodoConstants');
 var assign = require('object-assign');
 var Immutable = require('immutable');
-
+var $ = require('jquery');
+var csrfToken = $('#csrf-token').data('csrf');
 var CHANGE_EVENT = 'change';
-
 var _history = [];
 var _todos = Immutable.OrderedMap();
 
@@ -34,10 +34,15 @@ function create(text) {
   // Hand waving here -- not showing how this interacts with XHR or persistent
   // server-side storage.
   // Using the current timestamp + random number in place of a real id.
-  var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-
-  addHistoryEntry();
-  _todos = _todos.set(id, new TodoRecord({id : id, text : text}));
+  $.ajax({
+    method: "POST",
+    url: '/verts/',
+    data: {text:text,_csrf:csrfToken}
+  })
+  .done(function( result ) {
+    _todos = _todos.set(result._id, new TodoRecord({id : result._id, text : result.text}));
+    TodoStore.emitChange();
+  });
 }
 
 function addHistoryEntry() {
@@ -55,7 +60,19 @@ function goToHistory(index) {
  *     updated.
  */
 function update(id, updates) {
-  _todos = _todos.set(id, _todos.get(id).merge(updates));
+  var postupdates = $.extend({_csrf:csrfToken}, updates);
+  $.ajax({
+    method: "PUT",
+    url: '/verts/'+id,
+    data: postupdates
+  })
+  .done(function( result ) {
+    var id = result._id;
+    delete result._id
+    delete result.__v
+    _todos = _todos.set(id, _todos.get(id).merge(updates));
+    TodoStore.emitChange();
+  });
 }
 
 function updateWithHistory(id, updates) {
@@ -82,7 +99,16 @@ function updateAll(updates) {
  * @param  {string} id
  */
 function destroy(id) {
-  _todos = _todos.delete(id);
+  $.ajax({
+    method: "DELETE",
+    url: '/verts/'+id,
+    data: {_csrf:csrfToken}
+  })
+  .done(function( msg ) {
+    _todos = _todos.delete(id);
+    TodoStore.emitChange();
+  });
+
 }
 
 function destroyWithHistory(id) {
@@ -124,6 +150,22 @@ var TodoStore = assign({}, EventEmitter.prototype, {
     return _todos.toObject();
   },
 
+  /**
+   * Get the entire collection of from server.
+   * @return {object}
+   */
+  fetchAll: function() {
+      var that= this
+      $.get('/verts', function(results) {
+        results.forEach(function(item){
+           _todos = _todos.set(item._id, new TodoRecord({id : item._id, text : item.text}));
+        })
+        that.emitChange();
+      })
+  },
+
+
+
   getHistory : function () {
     return _history;
   },
@@ -157,7 +199,6 @@ AppDispatcher.register(function(action) {
       if (text !== '') {
         create(text);
       }
-      TodoStore.emitChange();
       break;
 
     case TodoConstants.TODO_TOGGLE_COMPLETE_ALL:
@@ -205,5 +246,10 @@ AppDispatcher.register(function(action) {
       // no op
   }
 });
+
+// AppDispatcher.dispatch({
+//     actionType: TodoConstants.TODO_CREATE,
+//     text: "Stuffy"
+//   });
 
 module.exports = TodoStore;

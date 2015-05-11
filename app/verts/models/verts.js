@@ -33,6 +33,7 @@ var setTags = function (tags) {
  */
 
 var ArticleSchema = new Schema({
+  text: {type : String, default : '', trim : true},
   title: {type : String, default : '', trim : true},
   body: {type : String, default : '', trim : true},
   user: {type : Schema.ObjectId, ref : 'User'},
@@ -53,24 +54,24 @@ var ArticleSchema = new Schema({
  * Validations
  */
 
-ArticleSchema.path('title').required(true, 'Article title cannot be blank');
-ArticleSchema.path('body').required(true, 'Article body cannot be blank');
+//ArticleSchema.path('title').required(true, 'Article title cannot be blank');
+//ArticleSchema.path('body').required(true, 'Article body cannot be blank');
 
 /**
  * Pre-remove hook
  */
 
-ArticleSchema.pre('remove', function (next) {
-  var imager = new Imager(imagerConfig, 'S3');
-  var files = this.image.files;
+// ArticleSchema.pre('remove', function (next) {
+//   var imager = new Imager(imagerConfig, 'S3');
+//   var files = this.image.files;
 
-  // if there are files associated with the item, remove from the cloud too
-  imager.remove(files, function (err) {
-    if (err) return next(err);
-  }, 'article');
+//   // if there are files associated with the item, remove from the cloud too
+//   imager.remove(files, function (err) {
+//     if (err) return next(err);
+//   }, 'article');
 
-  next();
-});
+//   next();
+// });
 
 /**
  * Methods

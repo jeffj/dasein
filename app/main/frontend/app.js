@@ -10,7 +10,8 @@ npm * Copyright (c) 2014, Facebook, Inc.
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
-//Import the components of the different app components
+
+//Import the modules of the different app components
 var TodoApp = require('../../verts/frontend/app');
 
 
