@@ -37,10 +37,8 @@ module.exports = function (app, passport) {
     threshold: 512
   }));
 
-  if (env === 'development') {
+  if (env !== 'production') {
     app.use('/', expressLess(config.root + '/public', { debug: true }));
-  } else{
-    
   }
 
   app.use('/',express.static(config.root + '/public'));
@@ -97,7 +95,6 @@ module.exports = function (app, passport) {
     }
   }));
 
-  console.log(config)
   // CookieParser should be above session
   app.use(cookieParser());
   app.use(cookieSession({ secret: 'secret' }));

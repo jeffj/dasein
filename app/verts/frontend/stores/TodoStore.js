@@ -13,10 +13,18 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var TodoConstants = require('../constants/TodoConstants');
 var assign = require('object-assign');
+var Immutable = require('immutable');
 
 var CHANGE_EVENT = 'change';
 
-var _todos = {};
+var _history = [];
+var _todos = Immutable.OrderedMap();
+
+var TodoRecord = Immutable.Record({
+  id : null,
+  complete : false,
+  text : 'A brand new thing to do!'
+});
 
 /**
  * Create a TODO item.
@@ -27,11 +35,17 @@ function create(text) {
   // server-side storage.
   // Using the current timestamp + random number in place of a real id.
   var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
-  _todos[id] = {
-    id: id,
-    complete: false,
-    text: text
-  };
+
+  addHistoryEntry();
+  _todos = _todos.set(id, new TodoRecord({id : id, text : text}));
+}
+
+function addHistoryEntry() {
+  _history.push(_todos);
+}
+
+function goToHistory(index) {
+  _todos = _history[index];
 }
 
 /**
@@ -41,7 +55,12 @@ function create(text) {
  *     updated.
  */
 function update(id, updates) {
-  _todos[id] = assign({}, _todos[id], updates);
+  _todos = _todos.set(id, _todos.get(id).merge(updates));
+}
+
+function updateWithHistory(id, updates) {
+  addHistoryEntry();
+  update(id, updates);
 }
 
 /**
@@ -52,7 +71,8 @@ function update(id, updates) {
 
  */
 function updateAll(updates) {
-  for (var id in _todos) {
+  addHistoryEntry();
+  for (var id in _todos.toObject()) {
     update(id, updates);
   }
 }
@@ -62,20 +82,25 @@ function updateAll(updates) {
  * @param  {string} id
  */
 function destroy(id) {
-  delete _todos[id];
+  _todos = _todos.delete(id);
+}
+
+function destroyWithHistory(id) {
+  addHistoryEntry();
+  destroy(id);
 }
 
 /**
  * Delete all the completed TODO items.
  */
 function destroyCompleted() {
-  for (var id in _todos) {
-    if (_todos[id].complete) {
+  addHistoryEntry();
+  for (var id in _todos.toObject()) {
+    if (_todos.getIn([id, 'complete'])) {
       destroy(id);
     }
   }
 }
-
 var TodoStore = assign({}, EventEmitter.prototype, {
 
   /**
@@ -84,7 +109,7 @@ var TodoStore = assign({}, EventEmitter.prototype, {
    */
   areAllComplete: function() {
     for (var id in _todos) {
-      if (!_todos[id].complete) {
+      if (!_todos.getIn([id, 'complete'])) {
         return false;
       }
     }
@@ -96,7 +121,11 @@ var TodoStore = assign({}, EventEmitter.prototype, {
    * @return {object}
    */
   getAll: function() {
-    return _todos;
+    return _todos.toObject();
+  },
+
+  getHistory : function () {
+    return _history;
   },
 
   emitChange: function() {
@@ -127,8 +156,8 @@ AppDispatcher.register(function(action) {
       text = action.text.trim();
       if (text !== '') {
         create(text);
-        TodoStore.emitChange();
       }
+      TodoStore.emitChange();
       break;
 
     case TodoConstants.TODO_TOGGLE_COMPLETE_ALL:
@@ -141,25 +170,29 @@ AppDispatcher.register(function(action) {
       break;
 
     case TodoConstants.TODO_UNDO_COMPLETE:
-      update(action.id, {complete: false});
+      updateWithHistory(action.id, {complete: false});
       TodoStore.emitChange();
       break;
 
     case TodoConstants.TODO_COMPLETE:
-      update(action.id, {complete: true});
+      updateWithHistory(action.id, {complete: true});
       TodoStore.emitChange();
       break;
 
+    case TodoConstants.TODO_HISTORY_SET:
+      goToHistory(action.index);
+      TodoStore.emitChange();
+      break;
     case TodoConstants.TODO_UPDATE_TEXT:
       text = action.text.trim();
       if (text !== '') {
-        update(action.id, {text: text});
-        TodoStore.emitChange();
+        updateWithHistory(action.id, {text: text});
       }
+      TodoStore.emitChange();
       break;
 
     case TodoConstants.TODO_DESTROY:
-      destroy(action.id);
+      destroyWithHistory(action.id);
       TodoStore.emitChange();
       break;
 

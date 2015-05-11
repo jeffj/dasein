@@ -11,7 +11,7 @@ var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
 //Import the components of the different app components
-var TodoApp = require('../../verts/frontend/appClass');
+var TodoApp = require('../../verts/frontend/app');
 
 
 var About = React.createClass({
