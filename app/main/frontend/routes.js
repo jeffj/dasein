@@ -8,10 +8,13 @@ npm * Copyright (c) 2014, Facebook, Inc.
  */
 
 var React = require('react');
-var Router = require('react-router');
-var Route = Router.Route;
+
 var TodoApp = require('../../verts/frontend/appClass');
 
+// React.render(
+//   <TodoApp />,
+//   document.getElementById('todoapp')
+// );
 
 var About = React.createClass({
   render: function () {
@@ -26,7 +29,8 @@ var Inbox = React.createClass({
 });
 
 
-
+var Router = require('react-router');
+var Route = Router.Route;
 
 // declare our routes and their hierarchy
 var routes = (
@@ -40,7 +44,7 @@ var routes = (
 var RouteHandler = Router.RouteHandler;
 
 var App = React.createClass({
-  render:function() {
+  render () {
     return (
       <div>
         <h1>App</h1>
