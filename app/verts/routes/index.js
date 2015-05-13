@@ -7,15 +7,12 @@
 // set the NODE_PATH to be ./app/controllers (package.json # scripts # start)
 
 var verts = require('../controllers/verts');
-var express = require('express');
-var config = require('../../../config/config');
 
 var mongoose = require('mongoose')
 var crudUtils = require('../../../lib/crudUtils');
-var verts = mongoose.model('Verts');
+var VertsModel = mongoose.model('Verts');
 
-// var comments = require('../app/controllers/comments');
-// var tags = require('../app/controllers/tags');
+var main = require('../../main/controllers/index');
 var auth = require('../../../config/middlewares/authorization');
 
 /**
@@ -27,7 +24,17 @@ module.exports = function (app, passport, auth) {
   /**
    * Route middlewares
    */
+  app.get('/verts', main.index);
 
-  crudUtils.initRoutesForModel(app, verts, auth, '/verts')
+  // Holder logic for working with uniqu links per route
+  // app.param('id', articles.load);
+  // app.get('/vert/:id', articles.show); 
+  // app.param('id', articles.load);
+  // app.get('/vert/:id', articles.show);
+
+  /**
+   * Crud Operations With User Auth
+   */
+  crudUtils.initRoutesForModel(app, VertsModel, auth, '/verts/api')
   
 }
