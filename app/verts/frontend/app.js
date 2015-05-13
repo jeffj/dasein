@@ -9,16 +9,16 @@ npm * Copyright (c) 2014, Facebook, Inc.
 
 var React = require('react');
 
+
+
 var TodoApp = require('./components/TodoApp.react');
 
 
 var TodoAppClass = React.createClass({
   render: function () {
     return <div>
-    		<a href="#inbox">Inbox</a>
     		<TodoApp />
     	   </div>;
-    	   
   }
 });
 

@@ -10,6 +10,8 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var TodoActions = require('../actions/TodoActions');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var Footer = React.createClass({
 
@@ -59,6 +61,7 @@ var Footer = React.createClass({
           {itemsLeftPhrase}
         </span>
         {clearCompletedButton}
+        <Link to="home">Home</Link>
       </footer>
     );
   },

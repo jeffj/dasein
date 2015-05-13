@@ -15,11 +15,12 @@ var TodoConstants = require('../constants/TodoConstants');
 var assign = require('object-assign');
 var Immutable = require('immutable');
 var $ = require('jquery');
-var csrfTag = $('#csrf-token');
-var csrfToken = csrfTag ? csrfTag.data('csrf'):null;
+var csrfTag = document.getElementById("csrf-token");
+var csrfToken = csrfTag ? csrfTag.dataset.csrf:null;
 var CHANGE_EVENT = 'change';
 var _history = [];
 var _todos = Immutable.OrderedMap();
+var urlBase = '/verts/api/'
 
 var TodoRecord = Immutable.Record({
   id : null,
@@ -37,10 +38,11 @@ function create(text) {
   // Using the current timestamp + random number in place of a real id.
   $.ajax({
     method: "POST",
-    url: '/verts',
+    url: urlBase,
     data: {text:text,_csrf:csrfToken}
   })
   .done(function( result ) {
+    debugger
     _todos = _todos.set(result._id, new TodoRecord({id : result._id, text : result.text}));
     TodoStore.emitChange();
   });
@@ -64,7 +66,7 @@ function update(id, updates) {
   var postupdates = $.extend({_csrf:csrfToken}, updates);
   $.ajax({
     method: "PUT",
-    url: '/verts/'+id,
+    url: urlBase+id,
     data: postupdates
   })
   .done(function( result ) {
@@ -94,7 +96,6 @@ function updateAll(updates) {
     update(id, updates);
   }
 }
-
 /**
  * Delete a TODO item.
  * @param  {string} id
@@ -102,7 +103,7 @@ function updateAll(updates) {
 function destroy(id) {
   $.ajax({
     method: "DELETE",
-    url: '/verts/'+id,
+    url: urlBase+id,
     data: {_csrf:csrfToken}
   })
   .done(function( msg ) {
@@ -157,7 +158,7 @@ var TodoStore = assign({}, EventEmitter.prototype, {
    */
   fetchAll: function() {
       var that= this
-      $.get('/verts', function(results) {
+      $.get(urlBase, function(results) {
         results.forEach(function(item){
            _todos = _todos.set(item._id, new TodoRecord({id : item._id, text : item.text}));
         })
@@ -248,9 +249,5 @@ AppDispatcher.register(function(action) {
   }
 });
 
-// AppDispatcher.dispatch({
-//     actionType: TodoConstants.TODO_CREATE,
-//     text: "Stuffy"
-//   });
 
 module.exports = TodoStore;

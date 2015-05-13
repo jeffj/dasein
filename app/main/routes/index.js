@@ -25,24 +25,16 @@ module.exports = function (app, passport, auth) {
    * Route middlewares
    */
 
-  var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
-  var commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
+  //var vertAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 
   // home route
   app.get('/', main.index);
 
   app.use('/main',express.static(__dirname+'/../public'));
 
-
-  // article routes
-  // app.param('id', articles.load);
-  // app.get('/vert/:id', articles.show);
   /**
    * Error handling
    */
-  // home route
-//  app.get('/', main.index);
-
   app.use(function (err, req, res, next) {
     // treat as 404
     if (err.message
