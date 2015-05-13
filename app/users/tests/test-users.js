@@ -6,7 +6,7 @@
 var mongoose = require('mongoose')
   , should = require('should')
   , request = require('supertest')
-  , app = require('../server')
+  , app = require('../../../server')
   , context = describe
   , User = mongoose.model('User')
 
@@ -88,6 +88,6 @@ describe('Users', function () {
   })
 
   after(function (done) {
-    require('./helper').clearDb(done)
+     require('../../main/tests/helper').clearDb(done)
   })
 })
