@@ -19,7 +19,7 @@
     "node": "0.11.13"
   },
   "scripts": {
-    "start": "lessc public/css/bundle.less > public/css/bundle.css & watchify -o public/js/bundle.js -v -d app/main/frontend/app.js & NODE_PATH=./config:./app/controllers NODE_ENV=development ./node_modules/.bin/nodemon server.js",
+    "start": "lessc public/css/bundle.less > public/css/bundle.css & watchify -o public/js/bundle.js -v -d app/main/frontend/index.js & NODE_PATH=./config:./app/controllers NODE_ENV=development ./node_modules/.bin/nodemon server.js",
     "test": "jest & NODE_PATH=./config:./app/controllers NODE_ENV=test ./node_modules/.bin/mocha --reporter spec --timeout 10000 test/test-*.js",
     "build": "browserify app/main/frontend/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > public/js/bundle.min.js"
   },
@@ -60,8 +60,7 @@
     "react": "^0.13.x",
     "react-router":"^0.13.3",
     "jquery":"^2.1.4",
-    "immutable":"3.7.2",
-    "jquery": "2.1.4"
+    "immutable":"3.7.2"
   },
   "devDependencies": {
     "less": "2.3.1",
