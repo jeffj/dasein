@@ -171,6 +171,6 @@
 //   })
 
 //   after(function (done) {
-//     require('./helper').clearDb(done)
+//     require('../../app/main/tests/helper').clearDb(done)
 //   })
 // })

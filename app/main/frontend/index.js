@@ -13,15 +13,13 @@ var Route = Router.Route;
 var Link = Router.Link;
 
 //Import the modules of the different app components
-var Verts = require('../../verts/frontend/app');
+var Verts = require('../../articles/frontend/app');
 
 var Home = React.createClass({
   render: function () {
     return <div><Link to="verts">Dashboard</Link><h2>Home</h2></div>;
   }
 });
-
-
 
 
 // declare our routes and their hierarchy
@@ -40,7 +38,6 @@ var App = React.createClass({
   render:function() {
     return (
       <div>
-        <h1>App</h1>
         <RouteHandler/>
       </div>
     )

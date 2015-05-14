@@ -4,16 +4,9 @@
  */
 
 // Note: We can require users, articles and other cotrollers because we have
-// set the NODE_PATH to be ./app/controllers (package.json # scripts # start)
 
-//var users = require('../app/users/controllers/users');
  var main = require('../controllers/index');
  var express = require('express');
-
- //var express = require('../public/js/actions');
-
-// var tags = require('../app/controllers/tags');
-//var auth = require('../../../config/middlewares/authorization');
 
 /**
  * Expose routes
